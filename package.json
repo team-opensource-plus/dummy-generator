@@ -1,0 +1,32 @@
+{
+  "name": "dummy-generator",
+  "version": "1.0.0",
+  "description": "목적 : 오픈소스를 직접 배포해보자",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-opensource-plus/dummy-generator.git"
+  },
+  "bin": {
+    "log-run": "bin/cli.js"
+  },
+  "keywords": [
+    "sample"
+  ],
+  "files": [
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/team-opensource-plus/dummy-generator/issues"
+  },
+  "homepage": "https://github.com/team-opensource-plus/dummy-generator#readme",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "openai": "^3.3.0"
+  }
+}
