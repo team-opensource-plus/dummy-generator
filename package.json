@@ -1,10 +1,11 @@
 {
   "name": "dummy-generator",
   "version": "1.0.0",
-  "description": "목적 : 오픈소스를 직접 배포해보자",
+  "description": "create dummy data using GPT",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,19 @@
   "homepage": "https://github.com/team-opensource-plus/dummy-generator#readme",
   "dependencies": {
     "commander": "^11.0.0",
+    "dotenv": "^16.3.1",
     "openai": "^3.3.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
