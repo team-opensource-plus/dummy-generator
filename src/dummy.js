@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-const { Configuration, OpenAIApi } = require("openai");
+import { Configuration, OpenAIApi } from "openai";
+import { Command } from 'commander';
+import { ApiCaller } from "@gptapi/api-caller";
 require("dotenv").config();
-const commander = require('commander');
-const program = new commander.Command();
-const jsonfile = require('jsonfile');
+const program = new Command();
+import { readFileSync, writeFileSync } from 'jsonfile';
 // const  test = require('@util/api');
 // test.test();
 // require('../gptapi');
@@ -23,16 +24,14 @@ program
 
     try {
       console.log(`-f : ${options.file}`);
-      const config = await jsonfile.readFileSync(options.file);
+      const config = await readFileSync(options.file);
       console.log(`config: ${JSON.stringify(config)}`);
-      // const client = ApiCaller.createClient('token');
-      // const result = await client.generateDummyData(config, options.output, 10);
-      // console.log(`result: ${JSON.stringify(result)}`);
-      const result = config;
+      const client = ApiCaller.createClient('token');
+      const result = await client.generateDummyData(config, options.output, 10);
       console.log(`result: ${JSON.stringify(result)}`);
       
       const outputPath = `./default.${options.output}`;
-      await jsonfile.writeFileSync(outputPath, result);
+      await writeFileSync(outputPath, result);
       console.log(`Dummy data saved to: ${outputPath}`);
     } 
     catch (error) {

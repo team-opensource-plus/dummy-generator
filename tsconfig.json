@@ -1,23 +1,22 @@
 {
   "compilerOptions": {
-
-    "module": "commonjs",  
-    "noImplicitAny": false,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */                              /* Specify what module code is generated. */
-    "noUnusedLocals": false,                           /* Enable error reporting when local variables aren't read. */
-    "removeComments": true,                           /* Disable emitting comments. */
-    "noLib": false, 
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "useUnknownInCatchVariables": false,
     "target": "ES2021",
     "sourceMap": true,
     "allowJs": false,
-    "outDir": "dist",
-    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "moduleResolution": "Node",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "paths": {
-      "@util/api": ["./gptapi"],
-    }
-  },
-  "include": ["gptapi/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+      "@gptapi/*": ["src/gptapi/*"],
+    },
+    "isolatedModules": true
+  }
 }
