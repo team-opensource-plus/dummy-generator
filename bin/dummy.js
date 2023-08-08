@@ -4,8 +4,12 @@ require("dotenv").config();
 const commander = require('commander');
 const program = new commander.Command();
 const jsonfile = require('jsonfile');
-const { ApiCaller } = require("../utils/api-caller");
-require('../utils/api-caller');
+const { test } = require('export-function');
+
+test.test();
+// require('../gptapi');
+
+// const ApiCaller = apiCaller.ApiCaller;
 
 program
   .name('dummy data generator')
@@ -22,12 +26,12 @@ program
     try {
       const config = jsonfile.readFile(options.file);
       const client = ApiCaller.createClient('token');
-      const result = await client.generateDummyData(config, options.output, 10);
-    
-      console.log(`result: ${JSON.stringify(result)}`);
-      const outputPath = `./default.${options.output}`;
-      jsonfile.writeFile(outputPath, result);
-      console.log(`Dummy data saved to: ${outputPath}`);
+      // const result = await client.generateDummyData(config, options.output, 10);
+      // console.log(`result: ${JSON.stringify(result)}`);
+
+      // const outputPath = `./default.${options.output}`;
+      // jsonfile.writeFile(outputPath, result);
+      // console.log(`Dummy data saved to: ${outputPath}`);
     } 
     catch (error) {
       console.error('Error:', error.message);

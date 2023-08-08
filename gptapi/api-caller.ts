@@ -1,8 +1,13 @@
 
-export class ApiCaller {
+export default class ApiCaller {
   
+  private _token: string = '';
+  constructor(token: string) {
+    this._token = token;
+  }
+
   static createClient(token: string):  ApiCaller {
-    return new ApiCaller();
+    return new ApiCaller(token);
   };
   
   generateDummyData(config: any, output: OutputType, count: number): Promise<any> {
@@ -23,7 +28,10 @@ export class ApiCaller {
   }
 }
 
+export const apiCaller = (token) => (token);
+
 export enum OutputType {
   JSON = 'json', 
   XML = 'xml'
 }
+
