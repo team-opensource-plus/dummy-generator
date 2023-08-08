@@ -1,4 +1,3 @@
-
 export default class ApiCaller {
   
   private _token: string = '';
@@ -28,7 +27,7 @@ export default class ApiCaller {
   }
 }
 
-export const apiCaller = (token) => (token);
+export const apiCaller = (token: any) => (token);
 
 export enum OutputType {
   JSON = 'json', 

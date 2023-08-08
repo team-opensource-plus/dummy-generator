@@ -4,11 +4,9 @@ require("dotenv").config();
 const commander = require('commander');
 const program = new commander.Command();
 const jsonfile = require('jsonfile');
-const { test } = require('export-function');
-
-test.test();
+// const  test = require('@util/api');
+// test.test();
 // require('../gptapi');
-
 // const ApiCaller = apiCaller.ApiCaller;
 
 program
@@ -24,14 +22,18 @@ program
   .action(async (options) => {
 
     try {
-      const config = jsonfile.readFile(options.file);
-      const client = ApiCaller.createClient('token');
+      console.log(`-f : ${options.file}`);
+      const config = await jsonfile.readFileSync(options.file);
+      console.log(`config: ${JSON.stringify(config)}`);
+      // const client = ApiCaller.createClient('token');
       // const result = await client.generateDummyData(config, options.output, 10);
       // console.log(`result: ${JSON.stringify(result)}`);
-
-      // const outputPath = `./default.${options.output}`;
-      // jsonfile.writeFile(outputPath, result);
-      // console.log(`Dummy data saved to: ${outputPath}`);
+      const result = config;
+      console.log(`result: ${JSON.stringify(result)}`);
+      
+      const outputPath = `./default.${options.output}`;
+      await jsonfile.writeFileSync(outputPath, result);
+      console.log(`Dummy data saved to: ${outputPath}`);
     } 
     catch (error) {
       console.error('Error:', error.message);
@@ -57,7 +59,7 @@ const start = async function () {
   console.log(JSON.stringify(chat_completion.data.choices[0].message.content));
 };
 
-start();
+// start();
 
 // TODO:
 // 명령어를 입력하면 config 파일을 읽어와서 (xml, json, sql)파일을 읽어와서
@@ -69,6 +71,6 @@ program.option("--generate").option("-s, --separator <char>");
 program.option("--loadxml").option("-s, --separator <char>");
 program.parse();
 
-const options = program.opts();
-const limit = options.first ? 1 : undefined;
-console.log(program.args[0].split(options.separator, limit));
+// const options = program.opts();
+// const limit = options.first ? 1 : undefined;
+// console.log(program.args[0].split(options.separator, limit));
