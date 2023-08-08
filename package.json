@@ -28,6 +28,7 @@
   "homepage": "https://github.com/team-opensource-plus/dummy-generator#readme",
   "dependencies": {
     "axios": "^1.4.0",
+    "@types/node": "^20.4.8",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1",
     "format": "^0.2.2",
