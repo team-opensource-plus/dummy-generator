@@ -20,24 +20,24 @@ program
   .command('g')
   .requiredOption('-f, --file <path>', 'import data config file path')
   .option('-o, --output <type>', 'Output type (json or xml)', 'json')
-  .action( async (options: any) => {
-
+  .action(async (options: any) => {
     try {
       console.log(`-f : ${options.file}`);
-      const config = jsonfile.readFileSync(options.file);
+      const config = await jsonfile.readFileSync(options.file);
       console.log(`config: ${JSON.stringify(config)}`);
       const client = new ApiCaller();
       const result = await client.generateDummyData();
       console.log(`result: ${JSON.stringify(result)}`);
       
       const outputPath = `./default.${options.output}`;
-      jsonfile.writeFileSync(outputPath, result);
+      await jsonfile.writeFileSync(outputPath, result);
       console.log(`Dummy data saved to: ${outputPath}`);
     } 
     catch (error: any) {
       console.error('Error:', error.message);
     }
-  }).parse(process.argv);
+  })
+  .parse(process.argv);
 
 
 

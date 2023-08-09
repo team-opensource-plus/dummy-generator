@@ -33,4 +33,5 @@ program
     catch (error: any) {
       console.error('Error:', error.message);
     }
-  });
+  })
+  .parse(process.argv);
