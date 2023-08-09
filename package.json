@@ -12,7 +12,7 @@
     "url": "git+https://github.com/team-opensource-plus/dummy-generator.git"
   },
   "bin": {
-    "dummy": "bin/dummy.js"
+    "dummy": "dist/index.js"
   },
   "keywords": [
     "sample"

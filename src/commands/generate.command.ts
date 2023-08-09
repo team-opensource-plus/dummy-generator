@@ -21,7 +21,7 @@ export class GenerateCommand {
         const options: any[] = []; 
         options.push({ name: 'file', value: command.file! });
         options.push({ name: 'type', value: command.type ?? 'json' });
-        options.push({ name: 'type', value: command.number! });
+        options.push({ name: 'count', value: command.count! });
       });
     }
 }
