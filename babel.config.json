@@ -1,0 +1,14 @@
+{
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "@gptapi": "./src/gptapi"
+                }
+            }
+        ],
+        "module-extension-resolver"
+        // "@babel/preset-typescript" // 추가 : TypeScript 문법을 바벨이 이해할 수 있는 JavaScript 문법으로 변환
+    ]
+}

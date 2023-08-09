@@ -5,6 +5,10 @@
 ## 주제 
 - 원하는 DB 스키마를 가지고 더미 데이터를 생성하는 라이브러리
 
+## 사용방법 
+// clone && root foler
+1. $ sudo npm link
+2. $ dummy g -f samples/user-data-config.json -o json 
 
 ## 스택
 - chat GPT api

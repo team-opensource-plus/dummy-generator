@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "dist", // 컴파일된 JavaScript 파일이 저장될 디렉토리 설정
+    "rootDir": "src", // TypeScript 파일의 소스 디렉토리 설정
+    "strict": true,
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  }
+}
