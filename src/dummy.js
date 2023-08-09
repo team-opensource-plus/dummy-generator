@@ -26,8 +26,8 @@ program
     try {
 
       const configuration = new Configuration({
-        organization: 'org-en1pZyG8yVp5oemdDiDLPXof',
-        apiKey: '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' 
+        organization: '',
+        apiKey: '' 
       });
 
       const openai = new OpenAIApi(configuration);
@@ -47,24 +47,44 @@ program
 
       console.log(`prompt : ${prompt}`)
 
-      const chat_completion = await openai.createChatCompletion({
-          // chat-gpt 언어 모델
+      // const chat_completion = await openai.createChatCompletion({
+      //     // chat-gpt 언어 모델
+      //     model: "text-davinci-003",
+      //     // 프롬프트 명령어
+      //     prompt: '아무거나 대답해',
+      //     // 정직한 답변은 0, 상상력 발휘하기 원하면 2 이상
+      //     temperature: 0,
+      //     // 1024가 설정 기본값, 이상을 넘어가면 과금
+      //     max_tokens: 1000,
+      //     top_p: 1,
+      //     frequency_penalty: 0.0,
+      //     presence_penalty: 0.0,
+      //     stop: ["\n"],
+      // });
+
+          const chat_completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{role: "user", content: prompt}],
+    });
+
+      const chat_completion = await openai.createCompletion(
+        {
           model: "text-davinci-003",
-          // 프롬프트 명령어
-          prompt: '아무거나 대답해',
-          // 정직한 답변은 0, 상상력 발휘하기 원하면 2 이상
-          temperature: 0,
-          // 1024가 설정 기본값, 이상을 넘어가면 과금
-          max_tokens: 1000,
-          top_p: 1,
-          frequency_penalty: 0.0,
-          presence_penalty: 0.0,
-          stop: ["\n"],
-      });
+          prompt: prompt,
+        },
+        {
+          timeout: 10000,
+          headers: {
+            "Example-Header": "example",
+          },
+        }
+      );
+      
       console.log('OpenAI API Request:', chat_completion.config);
       console.log('OpenAI API Response:', chat_completion.data);
       
-      const jsonData = chat_completion.data.choices[0].message.content;
+      // const jsonData = chat_completion.data.choices[0].message.content;
+      const jsonData = chat_completion.data.choices[0].text;
       console.log(`jsonData : ${jsonData}`);
       const dataObj = JSON.parse(jsonData);
       console.log(`dataObj : ${dataObj}`);
