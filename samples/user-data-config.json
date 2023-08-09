@@ -1,7 +1,4 @@
-{
-	"output_type": "json",
-	"require_count": 10,
-	"columns": [
+[
 	{
 		"column-name" : "name",
 		"column-description" : "한국사람이름",
@@ -13,5 +10,5 @@
 		"column-description" : "나이",
     "max-length": "2",
 		"unique": false
-	}]
-}
+	}
+]

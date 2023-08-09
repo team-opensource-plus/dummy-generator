@@ -1,8 +1,4 @@
 export class ApiCaller {
-
-  static createClient(token: string):  ApiCaller {
-    return new ApiCaller();
-  };
   
   generateDummyData(config: any, output: OutputType, count: number): Promise<any> {
     return Promise.resolve([

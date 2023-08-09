@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 import { Configuration, OpenAIApi } from "openai";
 import { Command } from 'commander';
-import { ApiCaller } from "@gptapi/api-caller";
-require("dotenv").config();
+import { config } from "dotenv";
+import path from "path"; // path 모듈 추가
+config();
 const program = new Command();
-import { readFileSync, writeFileSync } from 'jsonfile';
+import jsonfile from 'jsonfile';
+import * as fs from 'fs';
 // const  test = require('@util/api');
 // test.test();
 // require('../gptapi');
@@ -21,42 +23,61 @@ program
   .requiredOption('-f, --file <path>', 'import data config file path')
   .option('-o, --output <type>', 'Output type (json or xml)', 'json')
   .action(async (options) => {
-
     try {
-      console.log(`-f : ${options.file}`);
-      const config = await readFileSync(options.file);
-      console.log(`config: ${JSON.stringify(config)}`);
-      const client = ApiCaller.createClient('token');
-      const result = await client.generateDummyData(config, options.output, 10);
-      console.log(`result: ${JSON.stringify(result)}`);
+
+      const configuration = new Configuration({
+        organization: 'org-en1pZyG8yVp5oemdDiDLPXof',
+        apiKey: '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' 
+      });
+
+      const openai = new OpenAIApi(configuration);
+
+      console.log(`options.file : ${options.file}`);
       
+      const configFilePath = path.resolve(options.file);
+      console.log(`configFilePath : ${configFilePath}`);
+
+      //const columns = JSON.parse(jsonfile.readFileSync(configFilePath, 'utf-8'));
+      const columns = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+      console.log(`columns : ${columns}`);
+
+      const prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
+      \n\nQ: ${JSON.stringify(columns)} 해당 data-config 를 보고 임시 데이터 10개를 json 형식으로 만들어줘
+      A:`;
+
+      console.log(`prompt : ${prompt}`)
+
+      const chat_completion = await openai.createChatCompletion({
+          // chat-gpt 언어 모델
+          model: "text-davinci-003",
+          // 프롬프트 명령어
+          prompt: '아무거나 대답해',
+          // 정직한 답변은 0, 상상력 발휘하기 원하면 2 이상
+          temperature: 0,
+          // 1024가 설정 기본값, 이상을 넘어가면 과금
+          max_tokens: 1000,
+          top_p: 1,
+          frequency_penalty: 0.0,
+          presence_penalty: 0.0,
+          stop: ["\n"],
+      });
+      console.log('OpenAI API Request:', chat_completion.config);
+      console.log('OpenAI API Response:', chat_completion.data);
+      
+      const jsonData = chat_completion.data.choices[0].message.content;
+      console.log(`jsonData : ${jsonData}`);
+      const dataObj = JSON.parse(jsonData);
+      console.log(`dataObj : ${dataObj}`);
+
       const outputPath = `./default.${options.output}`;
-      await writeFileSync(outputPath, result);
+      writeFileSync(outputPath, JSON.stringify(dataObj, null, 2));
       console.log(`Dummy data saved to: ${outputPath}`);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error('Error:', error.message);
     }
   });
 
-
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-// Start function
-const start = async function () {
-  console.log("hellodd");
-  const chat_completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      { role: "user", content: "더미데이터를 만들어서 JSON으로 출력해줘 " },
-    ],
-  });
-  console.log(JSON.stringify(chat_completion.data.choices[0].message.content));
-};
+program.parse(process.argv);
 
 // start();
 

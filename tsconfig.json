@@ -3,16 +3,22 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "useUnknownInCatchVariables": false,
-    "target": "ES2021",
+    //변환된 JavaScript 코드의 ECMAScript 목표 버전을 설정합니다. 여기서는 ES2021을 목표로 설정
+    "target": "es6",
+    "module": "commonjs",
+    //소스 맵을 생성하도록 설정하는 옵션으로, 원본 TypeScript 코드와 변환된 JavaScript 코드 간의 매핑을 제공
     "sourceMap": true,
-    "allowJs": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    //JavaScript 파일도 컴파일에 포함시킬지 여부를 결정하는 옵션
+    "allowJs": true,
+    //JSON 모듈을 import 할 수 있도록 허용하는 옵션
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "moduleResolution": "Node",
     "baseUrl": "./",
     "skipLibCheck": true,
-    "declaration": true,
+    "declaration": true,//TypeScript 컴파일을 수행할 때 .d.ts 파일을 생성하지 않도록 설정
     "emitDeclarationOnly": true,
     "paths": {
       "@gptapi/*": ["src/gptapi/*"],
