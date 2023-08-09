@@ -2,7 +2,6 @@
   "name": "dummy-generator",
   "version": "1.0.0",
   "description": "create dummy data using GPT",
-  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,7 +14,7 @@
     "url": "git+https://github.com/team-opensource-plus/dummy-generator.git"
   },
   "bin": {
-    "dummy": "bin/dummy.js"
+    "dummy": "bin/dummy.ts"
   },
   "keywords": [
     "sample"
@@ -33,6 +32,7 @@
     "axios": "^1.4.0",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1",
+    "figlet": "^1.6.0",
     "format": "^0.2.2",
     "jsonfile": "^6.1.0",
     "openai": "^3.3.0",
@@ -42,6 +42,7 @@
     "@babel/cli": "^7.22.10",
     "@babel/core": "^7.22.10",
     "@babel/preset-typescript": "^7.22.5",
+    "@types/figlet": "^1.5.6",
     "@types/jsonfile": "^6.1.1",
     "@types/node": "^20.4.9",
     "babel-plugin-module-extension-resolver": "^1.0.0",
