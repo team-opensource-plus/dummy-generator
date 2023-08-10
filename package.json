@@ -1,23 +1,27 @@
 {
   "name": "dummy-generator",
   "version": "1.0.0",
-  "description": "목적 : 오픈소스를 직접 배포해보자",
+  "description": "create dummy data using GPT",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "clean": "rm -rf dist",
+    "build": "babel src -d bin --extensions \".js,.ts\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/team-opensource-plus/dummy-generator.git"
   },
   "bin": {
-    "log-run": "bin/cli.js"
+    "dummy": "bin/dummy.js"
   },
   "keywords": [
     "sample"
   ],
   "files": [
-    "cli"
+    "bin"
   ],
   "author": "",
   "license": "ISC",
@@ -26,7 +30,30 @@
   },
   "homepage": "https://github.com/team-opensource-plus/dummy-generator#readme",
   "dependencies": {
+    "@types/node": "^20.4.8",
+    "axios": "^1.4.0",
     "commander": "^11.0.0",
-    "openai": "^3.3.0"
+    "dotenv": "^16.3.1",
+    "format": "^0.2.2",
+    "jsonfile": "^6.1.0",
+    "openai": "^3.3.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.10",
+    "@babel/core": "^7.22.10",
+    "@types/jsonfile": "^6.1.1",
+    "@types/node": "^20.4.8",
+    "babel-plugin-module-extension-resolver": "^1.0.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
