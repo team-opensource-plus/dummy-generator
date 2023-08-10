@@ -1,12 +1,12 @@
-import {  Configuration,  OpenAIApi } from "openai";
+import { Configuration, OpenAIApi } from "openai";
 import * as fs from 'fs';
 import * as path from 'path';
 
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  organization: 'org-en1pZyG8yVp5oemdDiDLPXof',
-  apiKey: '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'
+  organization: 'org-wZe5I0qCTEXkcaScnrJSyaHo',
+  apiKey: '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'
 });
 
 
@@ -15,6 +15,26 @@ export function parseConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
   console.log(`configFilePath : ${configFilePath}`);
   const columns = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+
+
+  columns.forEach((column: { [x: string]: any; }) => {
+    const columnName = column['column-name'];
+    const columnDescription = column['column-description'];
+    const maxLength = column['max-length'];
+    const isUnique = column['unique'];
+
+    console.log(`Column Name: ${columnName}`);
+    console.log(`Column Description: ${columnDescription}`);
+    console.log(`Max Length: ${maxLength}`);
+    console.log(`Unique: ${isUnique}`);
+    console.log('---');
+
+    if (columnName === undefined || columnDescription === undefined || maxLength === undefined || isUnique === undefined) {
+      throw new Error('Invalid config file');
+    }
+  });
+
+
   console.log(`columns : ${columns}`);
   return columns;
 }
@@ -55,7 +75,7 @@ export interface SaveOptions {
 }
 
 export class DataSaver {
-  constructor(private options: SaveOptions) {}
+  constructor(private options: SaveOptions) { }
 
   saveData(dataObj: any) {
     const { outputPath } = this.options;
@@ -81,6 +101,6 @@ export class DataSaver {
 
 
 // export enum OutputType {
-//   JSON = 'json', 
+//   JSON = 'json',
 //   XML = 'xml'
 // }
