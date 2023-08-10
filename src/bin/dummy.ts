@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+const program = new Command();
+const figlet = require("figlet");
+import { readFileSync, writeFileSync } from 'jsonfile';
 import { ApiCaller } from '../gptapi/api-caller';
 require("dotenv").config();
-const program = new Command();
-import { readFileSync, writeFileSync } from 'jsonfile';
+
+
 
 program
   .name('dummy data generator')
