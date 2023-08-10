@@ -2,8 +2,6 @@
   "name": "dummy-generator",
   "version": "1.0.0",
   "description": "create dummy data using GPT",
-  "type": "module",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
@@ -15,16 +13,13 @@
     "url": "git+https://github.com/team-opensource-plus/dummy-generator.git"
   },
   "bin": {
-    "dummy": "bin/dummy.js"
+    "dummy": "dist/bin/dummy.js"
   },
   "keywords": [
     "sample"
   ],
-  "files": [
-    "bin"
-  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/team-opensource-plus/dummy-generator/issues"
   },
@@ -40,12 +35,8 @@
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.10",
-    "@babel/core": "^7.22.10",
     "@types/jsonfile": "^6.1.1",
     "@types/node": "^20.4.8",
-    "babel-plugin-module-extension-resolver": "^1.0.0",
-    "babel-plugin-module-resolver": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.1"
