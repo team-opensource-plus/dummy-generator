@@ -6,13 +6,13 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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' 
+  apiKey: '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'
 });
 
 // gpt 호출하는 부분
 export class ApiCaller {
   private prompt: any;
-  constructor() {}
+  constructor() { }
   async createChatCompletion(
     config: any,
     outputType: OutputType,
@@ -20,8 +20,8 @@ export class ApiCaller {
   ): Promise<any> {
     this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
       \n\nQ: ${JSON.stringify(
-        config,
-      )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
+      config,
+    )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
       A:`;
   }
 
@@ -52,7 +52,7 @@ export interface SaveOptions {
 }
 
 export class DataSaver {
-  constructor(private options: SaveOptions) {}
+  constructor(private options: SaveOptions) { }
 
   saveData(dataObj: any) {
     const { outputPath } = this.options;
@@ -81,6 +81,23 @@ export function parseConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
   console.log(`configFilePath : ${configFilePath}`);
   const columns = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+  columns.forEach((column: { [x: string]: any; }) => {
+    const columnName = column['column-name'];
+    const columnDescription = column['column-description'];
+    const maxLength = column['max-length'];
+    const isUnique = column['unique'];
+
+    console.log(`Column Name: ${columnName}`);
+    console.log(`Column Description: ${columnDescription}`);
+    console.log(`Max Length: ${maxLength}`);
+    console.log(`Unique: ${isUnique}`);
+    console.log('---');
+
+    if (columnName === undefined || columnDescription === undefined || maxLength === undefined || isUnique === undefined) {
+      throw new Error('Invalid config file');
+    }
+  });
+
   console.log(`columns : ${columns}`);
   return columns;
 }
