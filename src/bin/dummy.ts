@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { Command } from 'commander';
+const { Command } = require("commander");
 const program = new Command();
 const figlet = require("figlet");
 import { readFileSync, writeFileSync } from 'jsonfile';
@@ -18,7 +18,7 @@ program
   .description('Generate dummy data')
   .requiredOption('-f, --file <path>', 'import data config file path')
   .option('-o, --output <type>', 'Output type (json or xml)', 'json')
-  .action(async (options) => {
+  .action(async (options: any) => {
 
     try {
       console.log(`-f : ${options.file}`);
