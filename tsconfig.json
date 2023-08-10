@@ -1,22 +1,14 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "useUnknownInCatchVariables": false,
-    "target": "ES2021",
-    "sourceMap": true,
-    "allowJs": false,
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
+    "rootDir": "src",
+    "outDir": "dist",
     "strict": true,
-    "moduleResolution": "Node",
-    "baseUrl": "./",
-    "skipLibCheck": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "paths": {
-      "@gptapi/*": ["src/gptapi/*"],
-    },
-    "isolatedModules": true
-  }
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "bin"],
+  "exclude": ["node_modules"]
 }
