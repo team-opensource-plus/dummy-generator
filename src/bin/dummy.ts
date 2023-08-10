@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-import { Configuration, OpenAIApi } from "openai";
 import { Command } from 'commander';
-import { ApiCaller } from "@gptapi/api-caller";
+import { ApiCaller } from '../gptapi/api-caller';
 require("dotenv").config();
 const program = new Command();
 import { readFileSync, writeFileSync } from 'jsonfile';
@@ -30,7 +29,7 @@ program
       await writeFileSync(outputPath, result);
       console.log(`Dummy data saved to: ${outputPath}`);
     } 
-    catch (error) {
+    catch (error: any) {
       console.error('Error:', error.message);
     }
   });
