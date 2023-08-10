@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "clean": "rm -rf dist",
-    "build": "babel src -d bin --extensions \".js,.ts\""
+    "clean": "rm -rf dist", 
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
