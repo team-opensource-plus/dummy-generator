@@ -1,1 +1,1 @@
-{"output_type":"json","require_count":10,"columns":[{"column-name":"name","column-description":"한국사람이름","max-length":"3","unique":true},{"column-name":"age","column-description":"나이","max-length":"2","unique":false}]}
+[{"name":"일민규","email":"mk1@email.com"},{"name":"이민규","email":"mk2@email.com"},{"name":"삼민규","email":"mk3@email.com"}]
