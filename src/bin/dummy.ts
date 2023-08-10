@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'jsonfile';
 import { ApiCaller } from '../gptapi/api-caller';
 require("dotenv").config();
 
-
+console.log(figlet.textSync("Dummy Generator"));
 
 program
   .name('dummy data generator')
