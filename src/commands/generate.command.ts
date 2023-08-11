@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { Configuration, OpenAIApi } from 'openai';
-import { ApiCaller, OutputType } from '../gptapi';
+import { ApiCaller, OutputType, parseConfigFile } from '../gptapi';
 import * as jsonfile from 'jsonfile';
 
 export class GenerateCommand {
@@ -23,10 +23,10 @@ export class GenerateCommand {
       .action(async (options: any) => {
         try {
           console.log(`-f : ${options.file}`);
+          parseConfigFile(options.file);
           const config = await jsonfile.readFileSync(options.file);
           console.log(`config: ${JSON.stringify(config)}`);
           const client = new ApiCaller();
-
           const result = await client.createChatCompletion(
             config,
             OutputType.JSON,

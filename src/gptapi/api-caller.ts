@@ -6,7 +6,7 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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'
+  apiKey: 'YOUR_API_KEY'
 });
 
 // gpt 호출하는 부분
@@ -28,7 +28,6 @@ export class ApiCaller {
   async callGptApi() {
     try {
       const openai = new OpenAIApi(configuration); // Configuration을 생성하여 전달할 수도 있음
-
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
@@ -41,6 +40,7 @@ export class ApiCaller {
       });
       return result;
     } catch (error) {
+      console.log("callGptApi error")
       console.log(error);
     }
   }
@@ -80,7 +80,20 @@ export class DataSaver {
 export function parseConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
   console.log(`configFilePath : ${configFilePath}`);
-  const columns = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+  const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+
+  const outputType = data['output-type'];
+  if (outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+    throw new Error('Invalid outputType');
+  }
+
+  const requireCount = data['require_count'];
+  if (requireCount == undefined || requireCount <= 0) {
+    throw new Error('Invalid requireCount');
+  }
+
+  const columns = data.columns;
   columns.forEach((column: { [x: string]: any; }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
@@ -93,7 +106,8 @@ export function parseConfigFile(filePath: string): any {
     console.log(`Unique: ${isUnique}`);
     console.log('---');
 
-    if (columnName === undefined || columnDescription === undefined || maxLength === undefined || isUnique === undefined) {
+    if (columnName === undefined || columnDescription === undefined ||
+      maxLength === undefined || isUnique === undefined) {
       throw new Error('Invalid config file');
     }
   });
