@@ -6,13 +6,13 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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' 
+  apiKey: 'YOUR_API_KEY'
 });
 
 // gpt 호출하는 부분
 export class ApiCaller {
   private prompt: any;
-  constructor() {}
+  constructor() { }
   async createChatCompletion(
     config: any,
     outputType: OutputType,
@@ -20,15 +20,14 @@ export class ApiCaller {
   ): Promise<any> {
     this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
       \n\nQ: ${JSON.stringify(
-        config,
-      )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
+      config,
+    )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
       A:`;
   }
 
   async callGptApi() {
     try {
       const openai = new OpenAIApi(configuration); // Configuration을 생성하여 전달할 수도 있음
-
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
@@ -41,6 +40,7 @@ export class ApiCaller {
       });
       return result;
     } catch (error) {
+      console.log("callGptApi error")
       console.log(error);
     }
   }
@@ -52,7 +52,7 @@ export interface SaveOptions {
 }
 
 export class DataSaver {
-  constructor(private options: SaveOptions) {}
+  constructor(private options: SaveOptions) { }
 
   saveData(dataObj: any) {
     const { outputPath } = this.options;
@@ -80,7 +80,38 @@ export class DataSaver {
 export function parseConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
   console.log(`configFilePath : ${configFilePath}`);
-  const columns = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+  const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+
+  const outputType = data['output-type'];
+  if (outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+    throw new Error('Invalid outputType');
+  }
+
+  const requireCount = data['require_count'];
+  if (requireCount == undefined || requireCount <= 0) {
+    throw new Error('Invalid requireCount');
+  }
+
+  const columns = data.columns;
+  columns.forEach((column: { [x: string]: any; }) => {
+    const columnName = column['column-name'];
+    const columnDescription = column['column-description'];
+    const maxLength = column['max-length'];
+    const isUnique = column['unique'];
+
+    console.log(`Column Name: ${columnName}`);
+    console.log(`Column Description: ${columnDescription}`);
+    console.log(`Max Length: ${maxLength}`);
+    console.log(`Unique: ${isUnique}`);
+    console.log('---');
+
+    if (columnName === undefined || columnDescription === undefined ||
+      maxLength === undefined || isUnique === undefined) {
+      throw new Error('Invalid config file');
+    }
+  });
+
   console.log(`columns : ${columns}`);
   return columns;
 }
