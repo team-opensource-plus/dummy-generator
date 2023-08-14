@@ -1,4 +1,7 @@
-import { Configuration, OpenAIApi } from 'openai';
+import {
+  Configuration,
+  OpenAIApi
+} from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
@@ -17,7 +20,7 @@ export class ApiCaller {
     config: any,
     outputType: OutputType,
     count: number,
-  ): Promise<any> {
+  ): Promise < any > {
     this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
       \n\nQ: ${JSON.stringify(
         config,
@@ -25,19 +28,28 @@ export class ApiCaller {
       A:`;
   }
 
-  async callGptApi() {
+  async callGptApi(updateProgress: (progress: number) => void) {
     try {
-      const openai = new OpenAIApi(configuration); // Configuration을 생성하여 전달할 수도 있음
+      const openai = new OpenAIApi(configuration);
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
       });
-
-      return result.data.choices.map((choice: any) => choice.message.content);
+  
+      const processedResult = result.data.choices.map((choice: any) => choice.message.content);
+      
+      for (let i = 0; i <= 100; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        updateProgress(i / 100); // 프로그래스 진행률 업데이트
+      }
+  
+      return processedResult;
     } catch (error) {
       console.log('callGptApi error');
+      throw error;
     }
   }
+
 }
 
 // 파일 저장하는 부분
@@ -49,10 +61,14 @@ export class DataSaver {
   constructor(private options: SaveOptions) {}
 
   saveData(dataObj: any) {
-    const { outputPath } = this.options;
+    const {
+      outputPath
+    } = this.options;
 
     if (!fs.existsSync(outputPath)) {
-      fs.mkdirSync(outputPath, { recursive: true });
+      fs.mkdirSync(outputPath, {
+        recursive: true
+      });
     }
 
     const now = new Date();
@@ -90,7 +106,9 @@ export function parseConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: { [x: string]: any }) => {
+  columns.forEach((column: {
+    [x: string]: any
+  }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];
@@ -118,5 +136,5 @@ export function parseConfigFile(filePath: string): any {
 
 export enum OutputType {
   JSON = 'json',
-  XML = 'xml',
+    XML = 'xml',
 }

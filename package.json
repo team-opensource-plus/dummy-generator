@@ -27,7 +27,9 @@
   "homepage": "https://github.com/team-opensource-plus/dummy-generator#readme",
   "dependencies": {
     "@types/node": "^20.4.8",
+    "ansi-colors": "^4.1.3",
     "axios": "^1.4.0",
+    "cli-progress": "^3.12.0",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1",
     "figlet": "^1.6.0",
@@ -38,6 +40,7 @@
     "typescript": "^5.1.6"
   },
   "devDependencies": {
+    "@types/cli-progress": "^3.11.0",
     "@types/jsonfile": "^6.1.1",
     "@types/node": "^20.4.8",
     "husky": "^8.0.3",
