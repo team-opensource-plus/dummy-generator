@@ -6,13 +6,14 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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' 
+  apiKey: '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',
 });
 
 // gpt 호출하는 부분
 export class ApiCaller {
-  private prompt: any;
+  public prompt: any;
   constructor() {}
+
   async createChatCompletion(
     config: any,
     outputType: OutputType,
@@ -32,14 +33,11 @@ export class ApiCaller {
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
-        // temperature: 0,
-        // max_tokens: 1000,
-        // top_p: 1,
-        // frequency_penalty: 0.0,
-        // presence_penalty: 0.0,
-        // stop: ['\n'],
       });
-      return result;
+
+      return result.data.choices.map(
+        (choice: any) => choice.message.content,
+      );
     } catch (error) {
       console.log(error);
     }

@@ -32,11 +32,13 @@ export class GenerateCommand {
             OutputType.JSON,
             10,
           );
-          const result2 = client.callGptApi();
-          console.log(`result: ${JSON.stringify(result2)}`);
+          console.log(client.prompt);
+          const result2 = await client.callGptApi();
+          console.log(result2)
+          // console.log(`result: ${JSON.stringify(result2)}`);
 
           const outputPath = `./default.${options.output}`;
-          await jsonfile.writeFileSync(outputPath, result);
+          await jsonfile.writeFileSync(outputPath, result2);
           console.log(`Dummy data saved to: ${outputPath}`);
         } catch (error: any) {
           console.error('Error:', error.message);
