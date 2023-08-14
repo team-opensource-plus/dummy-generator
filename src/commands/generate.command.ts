@@ -23,9 +23,7 @@ export class GenerateCommand {
       .option('-o, --output <type>', 'Output type (json or xml)', 'json')
       // .option('-c, --cout <number>', 'input count 100', '100')
       .action(async (options: any) => {
-        console.log("하하하하하");
         try {
-          console.log("호호호호호");
           console.log(`-f : ${options.file}`);
           validateConfigFile(options.file);
           const config = await jsonfile.readFileSync(options.file);
@@ -36,8 +34,11 @@ export class GenerateCommand {
             OutputType.JSON,
             10,
           );
-          const result2 = client.callGptApi();
-          console.log(`result: ${JSON.stringify(result2)}`);
+          console.log(`result: ${result}`);
+          const result2 = await client.callGptApi();
+          
+          console.log(`result: ${result}`);
+          console.log(`result2: ${result2}`);
 
           const outputPath = `./default.${options.output}`;
           await jsonfile.writeFileSync(outputPath, result);
