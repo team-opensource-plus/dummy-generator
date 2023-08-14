@@ -9,7 +9,7 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: 'YOUR_API_KEY',
 });
 
 // gpt 호출하는 부분
