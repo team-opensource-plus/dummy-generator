@@ -27,18 +27,22 @@ export class GenerateCommand {
           console.log(`-f : ${options.file}`);
           validateConfigFile(options.file);
           const config = await jsonfile.readFileSync(options.file);
+
           console.log(`config: ${JSON.stringify(config)}`);
+
           const client = new ApiCaller();
-          const result = await client.createChatCompletion(
-            config,
-            OutputType.JSON,
-            10,
-          );
-          const result2 = client.callGptApi();
-          console.log(`result: ${JSON.stringify(result2)}`);
+
+          await client.createChatCompletion(config, OutputType.JSON, 10);
+          const result = await client.callGptApi();
+
+          if (result == undefined) {
+            throw new Error('Error: GPT error');
+          }
 
           const outputPath = `./default.${options.output}`;
+
           await jsonfile.writeFileSync(outputPath, result);
+
           console.log(`Dummy data saved to: ${outputPath}`);
         } catch (error: any) {
           console.error('Error:', error.message);
@@ -46,7 +50,6 @@ export class GenerateCommand {
       })
       .parse(process.argv);
   }
-
 }
 
 export function validateConfigFile(filePath: string): any {
@@ -55,9 +58,11 @@ export function validateConfigFile(filePath: string): any {
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output_type'];
-  console.log("output_type" + outputType)
-  if (outputType == undefined ||
-    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+  console.log('output_type' + outputType);
+  if (
+    outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== 'csv')
+  ) {
     throw new Error('Invalid outputType');
   }
 
@@ -67,7 +72,7 @@ export function validateConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: { [x: string]: any; }) => {
+  columns.forEach((column: { [x: string]: any }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];
@@ -79,8 +84,12 @@ export function validateConfigFile(filePath: string): any {
     console.log(`Unique: ${isUnique}`);
     console.log('---');
 
-    if (columnName === undefined || columnDescription === undefined ||
-      maxLength === undefined || isUnique === undefined) {
+    if (
+      columnName === undefined ||
+      columnDescription === undefined ||
+      maxLength === undefined ||
+      isUnique === undefined
+    ) {
       throw new Error('Invalid config file');
     }
   });
