@@ -32,12 +32,13 @@ export class GenerateCommand {
 
           const client = new ApiCaller();
 
-          await client.createChatCompletion(
-            config,
-            OutputType.JSON,
-            10,
-          );
+          await client.createChatCompletion(config, OutputType.JSON, 10);
           const result = await client.callGptApi();
+          
+
+          if (result == undefined) {
+            throw new Error('Error: GPT error');
+          }
 
           const outputPath = `./default.${options.output}`;
 
@@ -50,7 +51,6 @@ export class GenerateCommand {
       })
       .parse(process.argv);
   }
-
 }
 
 export function validateConfigFile(filePath: string): any {
@@ -59,9 +59,11 @@ export function validateConfigFile(filePath: string): any {
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output_type'];
-  console.log("output_type" + outputType)
-  if (outputType == undefined ||
-    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+  console.log('output_type' + outputType);
+  if (
+    outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== 'csv')
+  ) {
     throw new Error('Invalid outputType');
   }
 
@@ -71,7 +73,7 @@ export function validateConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: { [x: string]: any; }) => {
+  columns.forEach((column: { [x: string]: any }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];
@@ -83,8 +85,12 @@ export function validateConfigFile(filePath: string): any {
     console.log(`Unique: ${isUnique}`);
     console.log('---');
 
-    if (columnName === undefined || columnDescription === undefined ||
-      maxLength === undefined || isUnique === undefined) {
+    if (
+      columnName === undefined ||
+      columnDescription === undefined ||
+      maxLength === undefined ||
+      isUnique === undefined
+    ) {
       throw new Error('Invalid config file');
     }
   });
