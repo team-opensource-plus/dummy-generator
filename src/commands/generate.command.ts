@@ -34,7 +34,6 @@ export class GenerateCommand {
 
           await client.createChatCompletion(config, OutputType.JSON, 10);
           const result = await client.callGptApi();
-          
 
           if (result == undefined) {
             throw new Error('Error: GPT error');

@@ -6,7 +6,7 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: 'YOUR_API_KEY',
 });
 
 // gpt 호출하는 부분
@@ -35,7 +35,7 @@ export class ApiCaller {
 
       return result.data.choices.map((choice: any) => choice.message.content);
     } catch (error) {
-      console.log('Error: GPT error');
+      console.log('callGptApi error');
     }
   }
 }
