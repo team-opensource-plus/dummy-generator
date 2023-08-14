@@ -9,17 +9,13 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: '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'
+  apiKey: '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',
 });
 
 // gpt 호출하는 부분
 export class ApiCaller {
   private prompt: any;
-
- constructor() {
-    this.prompt = '';
-  }
-
+  constructor() {}
   async createChatCompletion(
     config: any,
     outputType: OutputType,
@@ -27,27 +23,33 @@ export class ApiCaller {
   ): Promise < any > {
     this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
       \n\nQ: ${JSON.stringify(
-      config,
-    )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
+        config,
+      )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
       A:`;
   }
 
-  async callGptApi(){
+  async callGptApi(updateProgress: (progress: number) => void) {
     try {
       const openai = new OpenAIApi(configuration);
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
-        messages: [{
-          role: 'user',
-          content: this.prompt
-        }],
+        messages: [{ role: 'user', content: this.prompt }],
       });
-      return result;
+  
+      const processedResult = result.data.choices.map((choice: any) => choice.message.content);
+      
+      for (let i = 0; i <= 100; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        updateProgress(i / 100); // 프로그래스 진행률 업데이트
+      }
+  
+      return processedResult;
     } catch (error) {
-      console.log("callGptApi error")
-      console.log(error);
+      console.log('callGptApi error');
+      throw error;
     }
   }
+
 }
 
 // 파일 저장하는 부분
@@ -91,8 +93,10 @@ export function parseConfigFile(filePath: string): any {
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output-type'];
-  if (outputType == undefined ||
-    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+  if (
+    outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== 'csv')
+  ) {
     throw new Error('Invalid outputType');
   }
 
@@ -103,7 +107,7 @@ export function parseConfigFile(filePath: string): any {
 
   const columns = data.columns;
   columns.forEach((column: {
-    [x: string]: any;
+    [x: string]: any
   }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
@@ -116,8 +120,12 @@ export function parseConfigFile(filePath: string): any {
     console.log(`Unique: ${isUnique}`);
     console.log('---');
 
-    if (columnName === undefined || columnDescription === undefined ||
-      maxLength === undefined || isUnique === undefined) {
+    if (
+      columnName === undefined ||
+      columnDescription === undefined ||
+      maxLength === undefined ||
+      isUnique === undefined
+    ) {
       throw new Error('Invalid config file');
     }
   });
