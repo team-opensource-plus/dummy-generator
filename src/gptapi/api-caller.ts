@@ -16,8 +16,7 @@ export class ApiCaller {
       apiKey: this.token,
     });
   }
-
-  async createChatCompletion(
+  async createChatCompletionEng(
     config: any,
     outputType: OutputType,
     count: number,
@@ -26,6 +25,18 @@ export class ApiCaller {
     - config :${JSON.stringify(config)} 
     - columns :${count}
     - output type : ${outputType}
+    `;
+  }
+
+  async createChatCompletionKor(
+    config: any,
+    outputType: OutputType,
+    count: number,
+  ): Promise<any> {
+    this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄게. 만약 모른다면 "모름"이라고 답변할게.
+    Q: ${JSON.stringify(config)}
+    해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 생성해줘.
+    A: 
     `;
   }
 
@@ -48,6 +59,7 @@ export class ApiCaller {
 
       return processedResult;
     } catch (error) {
+      // console.log(error)
       console.log('callGptApi error');
       throw error;
     }
