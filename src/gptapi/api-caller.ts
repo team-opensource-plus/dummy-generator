@@ -1,4 +1,7 @@
-import { Configuration, OpenAIApi } from 'openai';
+import {
+  Configuration,
+  OpenAIApi
+} from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
@@ -6,7 +9,7 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: 'YOUR_API_KEY'
+  apiKey: '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',
 });
 
 // gpt 호출하는 부분
@@ -25,22 +28,28 @@ export class ApiCaller {
       A:`;
   }
 
-  async callGptApi() {
+  async callGptApi(updateProgress: (progress: number) => void) {
     try {
-      const openai = new OpenAIApi(configuration); // Configuration을 생성하여 전달할 수도 있음
+      const openai = new OpenAIApi(configuration);
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
       });
 
-      return result.data.choices.map(
-        (choice: any) => choice.message.content,
-      );
+      const processedResult = result.data.choices.map((choice: any) => choice.message.content);
+
+      for (let i = 0; i <= 100; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        updateProgress(i / 100); // 프로그래스 진행률 업데이트
+      }
+
+      return processedResult;
     } catch (error) {
-      console.log("callGptApi error")
-      console.log(error);
+      console.log('callGptApi error');
+      throw error;
     }
   }
+
 }
 
 // 파일 저장하는 부분
@@ -52,10 +61,14 @@ export class DataSaver {
   constructor(private options: SaveOptions) { }
 
   saveData(dataObj: any) {
-    const { outputPath } = this.options;
+    const {
+      outputPath
+    } = this.options;
 
     if (!fs.existsSync(outputPath)) {
-      fs.mkdirSync(outputPath, { recursive: true });
+      fs.mkdirSync(outputPath, {
+        recursive: true
+      });
     }
 
     const now = new Date();
@@ -80,8 +93,10 @@ export function parseConfigFile(filePath: string): any {
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output-type'];
-  if (outputType == undefined ||
-    (outputType !== 'json' && outputType !== 'xml' && outputType !== "csv")) {
+  if (
+    outputType == undefined ||
+    (outputType !== 'json' && outputType !== 'xml' && outputType !== 'csv')
+  ) {
     throw new Error('Invalid outputType');
   }
 
@@ -91,7 +106,9 @@ export function parseConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: { [x: string]: any; }) => {
+  columns.forEach((column: {
+    [x: string]: any
+  }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];
@@ -103,8 +120,12 @@ export function parseConfigFile(filePath: string): any {
     console.log(`Unique: ${isUnique}`);
     console.log('---');
 
-    if (columnName === undefined || columnDescription === undefined ||
-      maxLength === undefined || isUnique === undefined) {
+    if (
+      columnName === undefined ||
+      columnDescription === undefined ||
+      maxLength === undefined ||
+      isUnique === undefined
+    ) {
       throw new Error('Invalid config file');
     }
   });
