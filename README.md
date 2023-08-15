@@ -22,7 +22,7 @@ Dummy-genenrator is a library that generates dummy data based on the schema you 
     ```
 5. Init dummy-generator
     ```bash
-    $ dummy init
+    $ dummy init 
     ? Please input your API token: sk-xxxxxxxxxxxxxxxxxxxxxxxx
     ```
 
