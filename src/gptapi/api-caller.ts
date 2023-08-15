@@ -9,22 +9,22 @@ dotenv.config();
 
 // 사용자의 apiKey 설정
 const configuration = new Configuration({
-  apiKey: 'YOUR_API_KEY',
+  apiKey: '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',
 });
 
 // gpt 호출하는 부분
 export class ApiCaller {
   private prompt: any;
-  constructor() {}
+  constructor() { }
   async createChatCompletion(
     config: any,
     outputType: OutputType,
     count: number,
-  ): Promise < any > {
+  ): Promise<any> {
     this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
       \n\nQ: ${JSON.stringify(
-        config,
-      )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
+      config,
+    )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
       A:`;
   }
 
@@ -35,14 +35,14 @@ export class ApiCaller {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
       });
-  
+
       const processedResult = result.data.choices.map((choice: any) => choice.message.content);
-      
+
       for (let i = 0; i <= 100; i++) {
         await new Promise(resolve => setTimeout(resolve, 100));
         updateProgress(i / 100); // 프로그래스 진행률 업데이트
       }
-  
+
       return processedResult;
     } catch (error) {
       console.log('callGptApi error');
@@ -58,7 +58,7 @@ export interface SaveOptions {
 }
 
 export class DataSaver {
-  constructor(private options: SaveOptions) {}
+  constructor(private options: SaveOptions) { }
 
   saveData(dataObj: any) {
     const {
@@ -136,5 +136,5 @@ export function parseConfigFile(filePath: string): any {
 
 export enum OutputType {
   JSON = 'json',
-    XML = 'xml',
+  XML = 'xml',
 }
