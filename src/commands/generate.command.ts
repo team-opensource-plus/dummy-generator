@@ -1,14 +1,15 @@
 import { Command } from 'commander';
-import { Configuration, OpenAIApi } from 'openai';
 import { ApiCaller, OutputType } from '../gptapi';
 import * as jsonfile from 'jsonfile';
 import * as path from 'path';
+import * as fsPromise from 'fs/promises';
 import * as fs from 'fs';
 import cliProgress from 'cli-progress';
 import colors from 'ansi-colors';
 
 export class GenerateCommand {
   private program;
+  public token_path = `${process.env.HOME}/.dummy-generator`;
   constructor() {
     this.program = new Command();
   }
@@ -20,70 +21,109 @@ export class GenerateCommand {
       .version('0.0.1');
 
     this.program
+      .command('init')
+      .argument('<token>', 'set openai token')
+      .action((token) => {
+        try {
+          if (!fs.existsSync(this.token_path)) {
+            fs.mkdirSync(this.token_path);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+        (async () => {
+          fs.writeFileSync(`${this.token_path}/gptToken`, token);
+        })();
+
+        const hello = fs.readFileSync(`${this.token_path}/gptToken`, 'utf8');
+        console.log(hello);
+      });
+
+    this.program
       .command('g')
       .requiredOption('-f, --file <path>', 'import data config file path')
+      // .option('-f, --file <path>', 'import data config file path')
       .option('-o, --output <type>', 'Output type (json or xml)', 'json')
-      // .option('-c, --cout <number>', 'input count 100', '100')
+      .option('-l, --lang <type>', 'Language (ko or en)', 'ko')
+      .option('-c, --count <number>', 'input count 100', '100')
       .action(async (options: any) => {
         try {
+          try {
+            fs.readFileSync(`${this.token_path}/gptToken`, 'utf8');
+          } catch (err) {
+            console.log('token is not exist');
+            console.log('plase set token');
+            console.log('dummy init token');
+            return;
+          }
 
           const progressBar = new cliProgress.SingleBar({
-            format: colors.magenta('GPT Progress |') + colors.cyan('{bar}') + colors.magenta('| {percentage}%') + colors.magenta('|| {value}/{total} Chunks'),
+            format:
+              colors.magenta('GPT Progress |') +
+              colors.cyan('{bar}') +
+              colors.magenta('| {percentage}%') +
+              colors.magenta('|| {value}/{total} Chunks'),
             barCompleteChar: '\u2588',
             barIncompleteChar: '\u2591',
-            hideCursor: true
+            hideCursor: true,
           });
 
+          if (options.file == undefined) {
+            throw new Error('Error: file is undefined');
+          }
 
           console.log(`-f : ${options.file}`);
           const filePath = options.file;
           const parts: string[] = options.file.split('.');
-          const fileExtension: string = parts.length > 1 ? parts.pop() || '' : '';
-          console.log("File extension:", fileExtension);
+
+          const fileExtension: string =
+            parts.length > 1 ? parts.pop() || '' : '';
+
+          console.log('File extension:', fileExtension);
+
           let config = null;
+
           if (fileExtension == 'json') {
             await validateConfigFile(filePath);
-            config = await JSON.stringify(jsonfile.readFileSync(filePath));
+            config = JSON.stringify(jsonfile.readFileSync(filePath));
           } else {
-            config = await readFileAsString(filePath)
+            config = await readFileAsString(filePath);
           }
-
-          console.log(`config: ${JSON.stringify(config)}`);
 
           const client = new ApiCaller();
           // 프로그래스 바, 시작 값을 0에서 전체 값을 100으로  설정
           progressBar.start(100, 0, {
-            speed: "N/A"
+            speed: 'N/A',
           });
 
-          const result = await client.createChatCompletion(config, OutputType.JSON, 10);
+          await client.createChatCompletion(config, OutputType.JSON, 10);
 
-          const result2 = await client.callGptApi((progress) => {
+          const result = await client.callGptApi((progress) => {
             progressBar.update(progress * 100);
           });
 
           progressBar.stop();
 
           progressBar.increment();
-          console.log(`result : ${result2}`)
-          if (result2 == undefined) {
+
+          if (result == undefined) {
             throw new Error('Error: GPT error');
           }
 
           // Stop the progress bar
           progressBar.stop();
 
-
           const outputPath = `./default.${options.output}`;
 
-          await jsonfile.writeFileSync(outputPath, result2);
+          jsonfile.writeFileSync(outputPath, result);
 
           console.log(`Dummy data saved to: ${outputPath}`);
         } catch (error: any) {
           console.error('Error:', error.message);
         }
-      })
-      .parse(process.argv);
+      });
+
+    this.program.parse(process.argv);
   }
 }
 
@@ -107,9 +147,7 @@ export function validateConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: {
-    [x: string]: any
-  }) => {
+  columns.forEach((column: { [x: string]: any }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];
@@ -128,7 +166,6 @@ export function validateConfigFile(filePath: string): any {
   console.log(`columns : ${columns}`);
   return columns;
 }
-
 
 function readFileAsString(filePath: string): Promise<string> {
   return new Promise((resolve, reject) => {
