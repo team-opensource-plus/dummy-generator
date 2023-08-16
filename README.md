@@ -40,11 +40,34 @@ $ npm install -g dummy-generator
 ### 2. 생성
 - 2-1. data-config.json 파일 작성
 ``` 
+<!-- project root folder -->
+vi samples/user-data-config.json
+``` 
+``` 
+{
+	"output_type": "json",
+	"require_count": 10,
+	"columns": [
+		{
+			"column-name": "name",
+			"column-description": "한국 사람 이름",
+			"max-length": "3",
+			"unique": true
+		},
+		{
+			"column-name": "age",
+			"column-description": "나이",
+			"max-length": "2",
+			"unique": false
+		}
+	]
+}
 
 ``` 
+
 - 2-2. generate 명령어 실행
 ``` 
-
+$ dummy g -f samples/user-data-config.json -o json
 ``` 
 
 ## 지원 명령어 
