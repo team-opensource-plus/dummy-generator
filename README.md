@@ -1,32 +1,61 @@
 # dummy-generator
-## 항해 플러스 2번째 프로젝트
-목적 : 오픈소스를 직접 배포해보자
+- Logo Image 
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-## 주제 
-- 원하는 DB 스키마를 가지고 더미 데이터를 생성하는 라이브러리
+<p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+<p align="center">
+    <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/cli.svg" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/cli.svg" alt="Package License" /></a>
+    <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/cli.svg" alt="NPM Downloads" /></a>
+    <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+    <a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+    <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+    <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+    <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+    <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 
-## 사용방법 
-// clone && root foler
-1. $ sudo npm link
-2. $ dummy g -f samples/user-data-config.json -o json 
+## 설명
+Dummy-Generator CLI는 ChatGPT 기반 테스트용 데이터를 생성해주는 명령줄 인터페이스 도구 입니다. 
+{data-config} 파일을 작성하여 원하는 샘플 데이터들을 생성할 수 있습니다. Generate 명령에는 ChatGPT Token값이 필요 합니다. 
+요청된 Data 크기에 따라 ChatGPT 사용료가 과금될 수 있습니다.
+여러건의 샘플 데이터를 명령어 하나로 생성해보세요.
 
-## 스택
-- chat GPT api
-- Typescript
-- Commander cli 
+CLI는 openai패키지를 사용합니다. 
 
-## 단계별 TODO list
-1. GPT를 이용한 더미 데이터 생성
-    a. 컬럼입력, 데이터 형식 등을 입력해서 더미 데이터를 생성 - (json 파일)
-2. CLI로 생성한 더미 데이터를 mysql로 입력
-     a. 1.a에 생성한 데이터를 mysql config 파일에 있는 sql서버로 insert까지
+## 설치
+```
+$ npm install -g dummy-generator
+``` 
 
-## 사용자 user Interface 예상 시나리오
-- **사용자 관점 사용방법**
-1. API access Token 설정(ChatGPT) - CLI
-2. 컬럼 생성 TS (JS) 형식으로 주어진 타입?으로 만들기
-    1. 원하는 데이터의 설명도 같이 넣기
-3. cli 로 더미 생성
-4. mysql 서버 정보 설정(config)
-5. cli로 더미 insert 실행
+## Quick Start
 
+### 1. token 인증 
+- GPT 토큰 발행 자세한 방법은 여기를 클릭해 주세요. 
+``` 
+
+``` 
+### 2. 생성
+- 2-1. data-config.json 파일 작성
+``` 
+
+``` 
+- 2-2. generate 명령어 실행
+``` 
+
+``` 
+
+## 지원 명령어 
+<!-- 테이블 형태 -->
+<!-- 명령어 / 옵션 정리 -->
+- generate : 
+-- option  :
+
+## Requirements
+- node >= 
+- npm >= 
+
+## License
+Dummy-Generator는 MIT LICENSE 입니다. 
