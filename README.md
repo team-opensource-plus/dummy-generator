@@ -1,7 +1,7 @@
 
 <img width="655" alt="SCR-20230815-qmsp-2 copy" src="https://github.com/team-opensource-plus/dummy-generator/assets/56494905/4cee5da0-979c-4c13-886d-dfaf9fe81dc5">
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/team-opensource-plus/dummy-generator) [![Node version](https://img.shields.io/badge/node_version-v16.20.1-blue)]() [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://www.npmjs.com/package/dummy-generator) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/team-opensource-plus/dummy-generator)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/team-opensource-plus/dummy-generator) [![Node version](https://img.shields.io/badge/node_version-v16.20.1-blue)]() [![npm version](https://img.shields.io/badge/npm_version-v8.19.4-blue)](https://www.npmjs.com/package/dummy-generator) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/team-opensource-plus/dummy-generator)
 
 # dummy-generator
 
@@ -22,9 +22,9 @@ Dummy-genenrator is a library that generates dummy data based on the schema you 
     ```
 5. Init dummy-generator
     ```bash
-    $ dummy init 
-    ? Please input your API token: sk-xxxxxxxxxxxxxxxxxxxxxxxx
+    $ dummy init sk-xxxxxxxxxxxxxxxxxxxxxxxx
     ```
+
 
 
 ## Documentation
@@ -68,6 +68,7 @@ You can improve it by sending pull requests to [this repository](https://github.
 ```
 
 ## Contributing
+
 
 
 
