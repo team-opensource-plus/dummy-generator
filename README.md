@@ -29,6 +29,15 @@ Dummy-genenrator is a library that generates dummy data based on the schema you 
 
 ## Documentation
 
+```bash
+# init dummy-generator with api-token
+$ dummy init <api-token>
+
+# generate dummy data
+$ dummy g -f <config-file> -o <output-type> -c <count>
+```
+- *default.json* will be generated in the root folder
+
 <!-- You can find the React documentation [on the website](https://react.dev/).  
 
 Check out the [Getting Started](https://react.dev/learn) page for a quick overview.
@@ -68,6 +77,8 @@ You can improve it by sending pull requests to [this repository](https://github.
 ```
 
 ## Contributing
+welcome to contribute to this project. This project is open to anyone who wants to contribute to this project. Using the [issue tracker](https://github.com/team-opensource-plus/dummy-generator/issues) and [pull request](https://github.com/team-opensource-plus/dummy-generator/pulls), you can contribute to this project.
+
 
 
 
