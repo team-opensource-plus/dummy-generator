@@ -1,55 +1,69 @@
-import {
-  Configuration,
-  OpenAIApi
-} from 'openai';
+import { Configuration, OpenAIApi } from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-// 사용자의 apiKey 설정
-const configuration = new Configuration({
-  apiKey: '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',
-});
 
 // gpt 호출하는 부분
 export class ApiCaller {
   private prompt: any;
-  constructor() { }
-  async createChatCompletion(
+  private configuration;
+  private token: string
+  constructor() {
+    this.token = fs.readFileSync(`${process.env.HOME}/.dummy-generator/gptToken`, 'utf8')
+    this.configuration = new Configuration({
+      apiKey: this.token,
+    });
+  }
+  async createChatCompletionEng(
     config: any,
     outputType: OutputType,
     count: number,
   ): Promise<any> {
-    this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄께. 만약 모른다면 "모름"이라고 할께.
-      \n\nQ: ${JSON.stringify(
-      config,
-    )} 해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 만들어줘
-      A:`;
+    this.prompt = `you are data generator. I want generate dummy data base on below config 
+    - config :${JSON.stringify(config)} 
+    - columns :${count}
+    - output type : ${outputType}
+    `;
+  }
+
+  async createChatCompletionKor(
+    config: any,
+    outputType: OutputType,
+    count: number,
+  ): Promise<any> {
+    this.prompt = `나는 인공지능 AI Chatbot이야. 질문을 하면 내가 답변을 해줄게. 만약 모른다면 "모름"이라고 답변할게.
+    Q: ${JSON.stringify(config)}
+    해당 data-config를 보고 임시 데이터 ${count}개를 ${outputType}형식으로 생성해줘.
+    A: 
+    `;
   }
 
   async callGptApi(updateProgress: (progress: number) => void) {
     try {
-      const openai = new OpenAIApi(configuration);
+      const openai = new OpenAIApi(this.configuration);
       const result = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: this.prompt }],
       });
 
-      const processedResult = result.data.choices.map((choice: any) => choice.message.content);
+      const processedResult = result.data.choices.map(
+        (choice: any) => choice.message.content,
+      );
 
       for (let i = 0; i <= 100; i++) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         updateProgress(i / 100); // 프로그래스 진행률 업데이트
       }
 
       return processedResult;
     } catch (error) {
+      // console.log(error)
       console.log('callGptApi error');
       throw error;
     }
   }
-
 }
 
 // 파일 저장하는 부분
@@ -58,16 +72,14 @@ export interface SaveOptions {
 }
 
 export class DataSaver {
-  constructor(private options: SaveOptions) { }
+  constructor(private options: SaveOptions) {}
 
   saveData(dataObj: any) {
-    const {
-      outputPath
-    } = this.options;
+    const { outputPath } = this.options;
 
     if (!fs.existsSync(outputPath)) {
       fs.mkdirSync(outputPath, {
-        recursive: true
+        recursive: true,
       });
     }
 
@@ -106,9 +118,7 @@ export function parseConfigFile(filePath: string): any {
   }
 
   const columns = data.columns;
-  columns.forEach((column: {
-    [x: string]: any
-  }) => {
+  columns.forEach((column: { [x: string]: any }) => {
     const columnName = column['column-name'];
     const columnDescription = column['column-description'];
     const maxLength = column['max-length'];

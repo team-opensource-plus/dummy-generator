@@ -1,6 +1,6 @@
 {
   "name": "dummy-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "create dummy data using GPT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,9 +18,14 @@
     "dummy": "dist/bin/dummy.js"
   },
   "keywords": [
-    "sample"
+    "dummy",
+    "create",
+    "data",
+    "gpt",
+    "generator",
+    "auto"
   ],
-  "author": "",
+  "author": "team-opensource-plus",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/team-opensource-plus/dummy-generator/issues"
