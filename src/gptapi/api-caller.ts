@@ -101,7 +101,7 @@ export class DataSaver {
 // 파일 읽어오는 부분
 export function parseConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
-  console.log(`configFilePath : ${configFilePath}`);
+  console.log(`Config file path : ${configFilePath}`);
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output-type'];
@@ -124,11 +124,11 @@ export function parseConfigFile(filePath: string): any {
     const maxLength = column['max-length'];
     const isUnique = column['unique'];
 
-    console.log(`Column Name: ${columnName}`);
-    console.log(`Column Description: ${columnDescription}`);
-    console.log(`Max Length: ${maxLength}`);
-    console.log(`Unique: ${isUnique}`);
-    console.log('---');
+    // console.log(`Column Name: ${columnName}`);
+    // console.log(`Column Description: ${columnDescription}`);
+    // console.log(`Max Length: ${maxLength}`);
+    // console.log(`Unique: ${isUnique}`);
+    // console.log('---');
 
     if (
       columnName === undefined ||
@@ -140,7 +140,7 @@ export function parseConfigFile(filePath: string): any {
     }
   });
 
-  console.log(`columns : ${columns}`);
+  // console.log(`columns : ${columns}`);
   return columns;
 }
 

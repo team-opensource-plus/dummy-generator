@@ -96,11 +96,11 @@ export const generateCommand = async (program: Command, tokenPath: string) => {
 
 export function validateConfigFile(filePath: string): any {
   const configFilePath = path.resolve(filePath);
-  console.log(`configFilePath : ${configFilePath}`);
+  console.log(`Config file path : ${configFilePath}`);
   const data = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
   const outputType = data['output_type'];
-  console.log('output_type' + outputType);
+  console.log('Output type : ' + outputType);
   if (
     outputType == undefined ||
     (outputType !== 'json' && outputType !== 'xml' && outputType !== 'csv')
@@ -130,7 +130,7 @@ export function validateConfigFile(filePath: string): any {
     }
   });
 
-  console.log(`columns : ${columns}`);
+  // console.log(`columns : ${columns}`);
   return columns;
 }
 
